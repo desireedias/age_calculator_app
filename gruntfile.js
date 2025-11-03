@@ -48,7 +48,12 @@ module.exports = function(grunt){
                         { 
                             match: /src="\.\/scripts\/app\.js"/g, 
                             replacement: 'src="scripts/app.min.js"'
+                        },
+                        {
+                            match: /src="\.\.\/src\/imagens\/icon-arrow\.svg"/g,
+                            replacement: 'src ="imagens/icon-arrow.svg"'
                         }
+                        
                     ]
                 },
                 files: [
@@ -93,6 +98,12 @@ module.exports = function(grunt){
                         cwd: 'src/',
                         src: 'index.html',
                         dest: 'dist/',
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/',
+                        src: ['imagens/**'],
+                        dest: 'dist/'
                     }
                 ]
             }
