@@ -1,3 +1,4 @@
+const { option } = require("grunt");
 
 module.exports = function(grunt){
     grunt.initConfig({
@@ -33,6 +34,31 @@ module.exports = function(grunt){
             html: {
                 files: ['src/*.html'],
                 tasks: ['copy:development']
+            }
+        },
+
+        replace: {
+            production: {
+                options: {
+                    patterns: [
+                        {
+                            match: /href="\.\.\/dev\/styles\/main\.css"/g,
+                            replacement: 'href="styles/main.min.css"'
+                        },
+                        { 
+                            match: /src="\.\/scripts\/app\.js"/g, 
+                            replacement: 'src="scripts/app.min.js"'
+                        }
+                    ]
+                },
+                files: [
+                    {
+                        expand: true, 
+                        cwd: 'dist/', 
+                        src: ['index.html'], 
+                        dest: 'dist/'
+                    }
+                ]
             }
         },
 
@@ -78,9 +104,10 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-copy')
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-replace')
 
     grunt.registerTask('dev', ['less:development', 'copy:development' ])
     grunt.registerTask('default', ['dev', 'watch']);
-    grunt.registerTask('build', ['less:production', 'uglify:production', 'copy:production']);
+    grunt.registerTask('build', ['less:production', 'uglify:production', 'copy:production', 'replace:production']);
 }
